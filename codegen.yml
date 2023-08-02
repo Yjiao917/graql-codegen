@@ -1,0 +1,29 @@
+schema: ./src/type-defs/**/*.graphql
+generates:
+  ./src/type-defs/types/types.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+      - add:
+          content: |
+            /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/no-explicit-any, @typescript-eslint/ban-types,  @typescript-eslint/no-unused-vars */
+            // @ts-nocheck
+
+            // THIS FILE IS AUTO-GENERATED, DO NOT EDIT MANUALLY!
+            // To update the contents of this file run: `npm run generate`
+            import { DeepPartial } from 'utility-types';
+    config:
+      skipTypename: true
+      useIndexSignature: true
+      noSchemaStitching: true
+      defaultMapper: DeepPartial<{T}>
+      customResolverFn: |
+        (
+          parent: TParent,
+          args: TArgs,
+          context: TContext,
+          info?: GraphQLResolveInfo
+        ) => Promise<TResult> | TResult;
+      namingConvention:
+        enumValues: change-case#upperCase
+      mappers:
